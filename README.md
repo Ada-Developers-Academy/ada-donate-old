@@ -32,3 +32,5 @@ TODO:
 - verify success before adding donor to database
 - add email, success, status, message, stripe_id
 - add validation for email
+- switch to postgresql
+- break app into seperate files (routes, db, setup)

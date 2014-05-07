@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Stripe</title>
+  <title>Donate to Ada Developers Academy</title>
   <style type="text/css" media="screen">
     form article label {
       display: block;
@@ -15,5 +15,17 @@
 </head>
 <body>
   {% block content %}{% endblock %}
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
+  <script type=text/javascript src="{{
+  url_for('static', filename='ajax.js') }}"></script>
+  <script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+  Stripe.setPublishableKey('{{key}}');
+  // ...
+</script>
 </body>
 </html>

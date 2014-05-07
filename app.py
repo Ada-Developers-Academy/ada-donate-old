@@ -34,7 +34,7 @@ def charge():
         description='Flask Charge'
     )
 
-    return render_template('charge.html', amount=amount)
+    return render_template('charge.html', amount=amount, formatted_amount=format((amount / 100), '.2f'))
 
 if __name__ == '__main__':
     app.run(debug=True)

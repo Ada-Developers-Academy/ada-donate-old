@@ -10,6 +10,7 @@ donations
  - donor_name : string (allow nil (anonymous))
 
 #### Errors:
+##Handled by Stripe
 
 - incorrect_number:     The card number is incorrect.
 - invalid_number:       The card number is not a valid credit card number.
@@ -23,3 +24,11 @@ donations
 - missing:              There is no card on a customer that is being charged.
 - processing_error:     An error occurred while processing the card.
 - rate_limit:           An error occurred due to requests hitting the API too quickly. Please email support@stripe.com if you're consistently running into this error.
+
+TODO:
+
+- format money to dollars on input
+- format money to dollars on donor page
+- verify success before adding donor to database
+- add email, success, status, message, stripe_id
+- add validation for email

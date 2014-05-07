@@ -20,7 +20,8 @@ def index():
 @app.route('/charge', methods=['POST'])
 def charge():
     # Amount in cents
-    amount = 500
+    amount = request.form['customer_amount']
+    dollar_amount = format((float(amount)/ 100), '.2f')
 
     customer = stripe.Customer.create(
         email='customer@example.com',
@@ -34,7 +35,7 @@ def charge():
         description='Flask Charge'
     )
 
-    return render_template('charge.html', amount=amount, formatted_amount=format((amount / 100), '.2f'))
+    return render_template('charge.html', amount=amount, dollar_amount=dollar_amount)
 
 if __name__ == '__main__':
     app.run(debug=True)

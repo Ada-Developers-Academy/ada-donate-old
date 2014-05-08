@@ -27,8 +27,6 @@ donations
 
 TODO:
 
-- format money to dollars on input
-- format money to dollars on donor page
 - verify success before adding donor to database
 - add email, success, status, message, stripe_id
 - add validation for email

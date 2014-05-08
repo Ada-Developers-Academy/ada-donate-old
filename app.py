@@ -54,7 +54,7 @@ def index():
 @app.route('/charge', methods=['POST'])
 def charge():
     # Amount in cents
-    amount = request.form['customer_amount']
+    amount = int(float(request.form['customer_amount']) * 100)
     dollar_amount = format((float(amount)/ 100), '.2f')
 
     customer = stripe.Customer.create(
@@ -71,11 +71,20 @@ def charge():
 
     db = get_db()
     db.execute('insert into donors (name, amount) values (?, ?)',
-                 [request.form['customer_name'], request.form['customer_amount']])
+                 [request.form['customer_name'], amount])
     db.commit()
 
     return render_template('charge.html', amount=amount, dollar_amount=dollar_amount)
 
+@app.template_filter('formatmoney')
+def formatmoney(amount, cents=100):
+    return format((float(amount) / cents), '.2f')
+@app.template_filter('check_anonymous')
+def check_anonymous(name):
+    if len(name) == 0:
+        return "Anonymous"
+    else:
+        return name
 @app.route('/donors')
 def show_donors():
     db = get_db()

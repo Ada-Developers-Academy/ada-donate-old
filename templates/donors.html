@@ -3,7 +3,7 @@
   <h1>Donors!</h1>
   <ul class=donors>
   {% for donor in donors %}
-    <li><h2>{{ donor.name }}</h2>{{ donor.amount|safe }}</li>
+    <li><h2>{{ donor.name }}</h2>${{ donor.amount|formatmoney }}</li>
   {% else %}
     <li><em>Unbelievable! No one has donated to this great program yet!</em></li>
   {% endfor %}

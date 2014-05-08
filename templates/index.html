@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
+  <div class="alert alert-danger alert-dismissable payment-errors">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <span></span>
+  </div>
+  
   <form action="/charge" method="POST" role='form' class="form-horizontal" id="payment-form">
-  <span class="alert alert-danger payment-errors"></span>
 
   <div class="form-group">
     <label class="col-lg-1">Name:</label>

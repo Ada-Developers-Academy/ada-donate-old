@@ -2,16 +2,8 @@
 <html>
 <head>
   <title>Donate to Ada Developers Academy</title>
-  <style type="text/css" media="screen">
-    form article label {
-      display: block;
-      margin: 5px;
-    }
-
-    form .submit {
-      margin: 15px 0;
-    }
-  </style>
+  <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/bootstrap.min.css') }}" type="text/css" media="all" charset="utf-8">
+  <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/layout.css') }}" type="text/css" media="all" charset="utf-8">
 </head>
 <body>
   {% block content %}{% endblock %}

@@ -1,3 +1,16 @@
 .payment-errors {
   display: none;
 }
+
+label {
+  text-transform: none;
+}
+
+input[type=text] {
+  border: 1px solid #ddd;
+}
+
+header {
+  background-color: #c6dde1;
+  margin-bottom: 10px;
+}

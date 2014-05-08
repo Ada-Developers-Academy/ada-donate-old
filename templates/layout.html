@@ -6,7 +6,11 @@
   <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/layout.css') }}" type="text/css" media="all" charset="utf-8">
 </head>
 <body>
-  {% block content %}{% endblock %}
+  
+  <div class='container'>
+    {% block content %}{% endblock %}
+  </div>
+  
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
   <script type=text/javascript src="{{

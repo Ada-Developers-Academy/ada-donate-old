@@ -79,6 +79,12 @@ def charge():
 @app.template_filter('formatmoney')
 def formatmoney(amount, cents=100):
     return format((float(amount) / cents), '.2f')
+@app.template_filter('check_anonymous')
+def check_anonymous(name):
+    if len(name) == 0:
+        return "Anonymous"
+    else:
+        return name
 @app.route('/donors')
 def show_donors():
     db = get_db()

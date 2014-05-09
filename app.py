@@ -69,10 +69,17 @@ def charge():
         description='Flask Charge'
     )
 
-    db = get_db()
-    db.execute('insert into donors (name, amount) values (?, ?)',
-                 [request.form['customer_name'], amount])
-    db.commit()
+    if not charge['failure_code']:
+        charge['failure_code'] = 'success'
+    if not charge['failure_message']:
+        charge['failure_message'] = 'success'
+    print charge
+
+    if charge['failure_code'] == 'success':
+        db = get_db()
+        db.execute('insert into donors (name, email, success, stripe_id, status, message, amount) values (?, ?, ?, ?, ?, ?, ?)',
+                     [request.form['customer_name'], request.form['customer_email'], charge['captured'], charge['id'], charge['failure_code'], charge['failure_message'], amount])
+        db.commit()
 
     return render_template('charge.html', amount=amount, dollar_amount=dollar_amount)
 
@@ -88,7 +95,7 @@ def check_anonymous(name):
 @app.route('/donors')
 def show_donors():
     db = get_db()
-    cur = db.execute('select name, amount from donors order by id desc')
+    cur = db.execute('select * from donors order by id desc')
     donors = cur.fetchall()
     return render_template('donors.html', donors=donors)
 

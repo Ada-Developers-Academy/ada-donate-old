@@ -2,12 +2,12 @@ donations
 =========
 
 ### Transaction
- - success    : boolean
+ x success    : boolean
  - status     : string (success or one of the error messages below)
  - message    : string (success or one of the error messages descriptions)
- - amount     : integer
- - stripe_id  : integer
- - donor_name : string (allow nil (anonymous))
+ x amount     : integer
+ x stripe_id  : integer
+ x donor_name : string (allow nil (anonymous))
 
 #### Errors:
 ##Handled by Stripe
@@ -27,8 +27,6 @@ donations
 
 TODO:
 
-- verify success before adding donor to database
-- add email, success, status, message, stripe_id
 - add validation for email
 - switch to postgresql
 - break app into seperate files (routes, db, setup)

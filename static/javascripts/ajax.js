@@ -11,6 +11,10 @@ $(document).ready(function() {
     Stripe.card.createToken($form, stripeResponseHandler);
 
   });
+  
+  $('.alert button.close').click(function (e) {
+    $(this).parent().hide()
+  })
 });
 
 function stripeResponseHandler(status, response) {
@@ -18,7 +22,7 @@ function stripeResponseHandler(status, response) {
     if (response.error) {
         //...
         // show the errors on the form
-        $(".payment-errors").text(response.error.message);
+        $(".payment-errors").show().find("span").text(response.error.message);
         form$.find('button').prop('disabled', false);
     } else {
         // token contains id, last4, and card type

@@ -2,23 +2,38 @@
 <html>
 <head>
   <title>Donate to Ada Developers Academy</title>
-  <style type="text/css" media="screen">
-    form article label {
-      display: block;
-      margin: 5px;
-    }
-
-    form .submit {
-      margin: 15px 0;
-    }
-  </style>
+  <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/bootstrap.min.css') }}" type="text/css" media="all" charset="utf-8">
+  <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/master.css') }}" type="text/css" media="all" charset="utf-8">
+  <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/layout.css') }}" type="text/css" media="all" charset="utf-8">
 </head>
 <body>
-  {% block content %}{% endblock %}
+  
+  <header role="banner">
+    <div class="l-container">
+
+      <div class="brand">
+        <a class="brand-logo" href="/">Ada Developers Academy</a>
+      </div>
+
+      <div class="nav-wrapper">
+        <nav class="nav-collapse closed" role="navigation" aria-hidden="false" style="-webkit-transition: max-height 250ms; transition: max-height 250ms; position: relative;">
+          <ul class="nav--main">
+            <li class=""><a href="/">Home</a></li>
+          </ul>
+        </nav><a href="#" class="nav-toggle" aria-hidden="true">Menu</a>
+      </div>
+
+    </div> <!-- end .l-container -->
+  </header>
+
+  
+  <div class='container'>
+    {% block content %}{% endblock %}
+  </div>
+  
   <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
-  <script type=text/javascript src="{{
-  url_for('static', filename='ajax.js') }}"></script>
+  <script type=text/javascript src="{{url_for('static', filename='javascripts/ajax.js') }}"></script>
   <script type=text/javascript>
   $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>

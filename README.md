@@ -24,9 +24,3 @@ donations
 - missing:              There is no card on a customer that is being charged.
 - processing_error:     An error occurred while processing the card.
 - rate_limit:           An error occurred due to requests hitting the API too quickly. Please email support@stripe.com if you're consistently running into this error.
-
-TODO:
-
-- add validation for email
-- switch to postgresql
-- break app into seperate files (routes, db, setup)

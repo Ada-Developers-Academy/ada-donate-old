@@ -1,3 +1,4 @@
 SECRET_KEY= 'This string is a stripe key'
 PUBLISHABLE_KEY= 'This string is a stripe key'
 DEBUG= True
+SQLALCHEMY_DATABASE_URI = "postgresql://USERNAME:PASSWORD@localhost/DBNAME"

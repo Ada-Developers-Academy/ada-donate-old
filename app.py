@@ -1,39 +1,33 @@
 import os
-import sqlite3
-from flask import Flask, render_template, request, g, redirect, url_for, abort, \
-     render_template, flash
+from flask import Flask, render_template, request, g, redirect, url_for, abort, render_template, flash
+from flask.ext.sqlalchemy import SQLAlchemy
 import stripe
 
 app = Flask(__name__)
 app.config.from_pyfile('application.cfg', silent=False)
+db = SQLAlchemy(app)
 
-# Load default config and override config from an environment variable
-app.config.update(dict(DATABASE=os.path.join(app.root_path, 'donations.db')))
+class Donor(db.Model):
+    id        = db.Column(db.Integer, primary_key=True)
+    name      = db.Column(db.String(80))
+    email     = db.Column(db.String(120))
+    success   = db.Column(db.Boolean)
+    stripe_id = db.Column(db.String(80))
+    status    = db.Column(db.String(80))
+    message   = db.Column(db.String(255))
+    amount    = db.Column(db.Integer)
+    
+    def __init__(self, **attrs):
+        self.name      = attrs["name"]
+        self.email     = attrs["email"]
+        self.success   = attrs["success"]
+        self.stripe_id = attrs["stripe_id"]
+        self.status    = attrs["status"]
+        self.message   = attrs["message"]
+        self.amount    = attrs["amount"]
 
-# DATABASE ...
-def connect_db():
-    rv = sqlite3.connect(app.config['DATABASE'])
-    rv.row_factory = sqlite3.Row
-    return rv
-
-def init_db():
-    with app.app_context():
-        db = get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
-def get_db():
-    if not hasattr(g, 'sqlite_db'):
-        g.sqlite_db = connect_db()
-    return g.sqlite_db
-
-@app.teardown_appcontext
-def close_db(error):
-    if hasattr(g, 'sqlite_db'):
-        g.sqlite_db.close()
-
-# ... DATABASE
+    def __repr__(self):
+        return '<Donor %r>' % self.name
 
 # STRIPE ...
 stripe_keys = {
@@ -42,7 +36,6 @@ stripe_keys = {
 }
 
 stripe.api_key = stripe_keys['secret_key']
-
 # ... STRIPE
 
 # ROUTES ...
@@ -70,16 +63,22 @@ def charge():
     )
 
     if not charge['failure_code']:
-        charge['failure_code'] = 'success'
-    if not charge['failure_message']:
+        charge['failure_code']    = 'success'
         charge['failure_message'] = 'success'
-    print charge
+    
+    donor = Donor(
+        name=request.form['customer_name'],
+        email=request.form['customer_email'],
+        success=charge['captured'],
+        stripe_id=charge['id'],
+        status=charge['failure_code'],
+        message=charge['failure_message'],
+        amount=amount
+    )
 
     if charge['failure_code'] == 'success':
-        db = get_db()
-        db.execute('insert into donors (name, email, success, stripe_id, status, message, amount) values (?, ?, ?, ?, ?, ?, ?)',
-                     [request.form['customer_name'], request.form['customer_email'], charge['captured'], charge['id'], charge['failure_code'], charge['failure_message'], amount])
-        db.commit()
+        db.session.add(donor)
+        db.session.commit()
 
     return render_template('charge.html', amount=amount, dollar_amount=dollar_amount)
 
@@ -94,9 +93,7 @@ def check_anonymous(name):
         return name
 @app.route('/donors')
 def show_donors():
-    db = get_db()
-    cur = db.execute('select * from donors order by id desc')
-    donors = cur.fetchall()
+    donors = Donor.query.all()
     return render_template('donors.html', donors=donors)
 
 # ... ROUTES

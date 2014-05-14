@@ -1,6 +1,24 @@
 donations
 =========
 
+### Getting Started
+
+Start by copying the `application.cfg.example` file:
+
+```
+cp application.cfg.example application.cfg
+```
+
+Change each value to the correct value for your environment
+
+### Prepare the DB
+Enter the python shell and run the following to load the db configuration
+
+```
+from app import db
+db.create_all()
+```
+
 ### Transaction
  x success    : boolean
  - status     : string (success or one of the error messages below)

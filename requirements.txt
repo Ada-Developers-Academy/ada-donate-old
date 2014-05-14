@@ -8,7 +8,6 @@ altgraph==0.10.1
 awscli==1.2.12
 bcdoc==0.12.1
 bdist-mpkg==0.4.4
-bonjour-py==0.3
 botocore==0.32.0
 colorama==0.2.5
 docutils==0.11

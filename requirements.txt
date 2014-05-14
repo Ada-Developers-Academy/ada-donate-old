@@ -15,6 +15,9 @@ gunicorn==18.0
 itsdangerous==0.23
 jmespath==0.2.1
 macholib==1.5
+numpy==1.6.2
+matplotlib==1.1.1
+modulegraph==0.10.1
 ply==3.4
 py2app==0.7.1
 pyOpenSSL==0.13

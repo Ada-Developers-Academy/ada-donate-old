@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import stripe
 
 app = Flask(__name__)
-app.config.from_pyfile('application.cfg', silent=False)
+app.config.from_pyfile('application.cfg', silent=True)
 db = SQLAlchemy(app)
 
 class Donor(db.Model):

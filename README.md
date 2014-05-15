@@ -3,20 +3,27 @@ donations
 
 ### Getting Started
 
-Start by copying the `application.cfg.example` file:
+Start by copying the setting from `application.cfg.example` into `.env`:
 
 ```
-cp application.cfg.example application.cfg
+cp application.cfg.example .env
 ```
 
 Change each value to the correct value for your environment
 
 ### Prepare the DB
-Enter the python shell and run the following to load the db configuration
+Enter the python shell `foreman run python` and run the following to load the db configuration
 
 ```
 from app import db
 db.create_all()
+```
+
+### Running the Application
+
+```
+gem install foreman
+foreman start
 ```
 
 ### Transaction

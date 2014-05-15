@@ -4,7 +4,7 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import stripe
 
 app = Flask(__name__)
-app.config.from_pyfile('application.cfg', silent=True)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"]
 db = SQLAlchemy(app)
 
 class Donor(db.Model):
@@ -31,8 +31,8 @@ class Donor(db.Model):
 
 # STRIPE ...
 stripe_keys = {
-    'secret_key': app.config['SECRET_KEY'],
-    'publishable_key': app.config['PUBLISHABLE_KEY']
+    'secret_key': os.environ['SECRET_KEY'],
+    'publishable_key': os.environ['PUBLISHABLE_KEY']
 }
 
 stripe.api_key = stripe_keys['secret_key']
@@ -99,4 +99,4 @@ def show_donors():
 # ... ROUTES
 
 if __name__ == '__main__':
-    app.run(debug=app.config['DEBUG'])
+    app.run(debug=True)

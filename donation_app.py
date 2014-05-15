@@ -4,7 +4,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import stripe
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"]
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"] 
+    
 db = SQLAlchemy(app)
 
 class Donor(db.Model):
@@ -44,22 +45,27 @@ stripe.api_key = stripe_keys['secret_key']
 def index():
     return render_template('index.html', key=stripe_keys['publishable_key'])
 
+@app.route("/thank-you")
+def thank_you():
+  donor = Donor.query.get(request.args.get('donor'))
+  return render_template('thank_you.html', donor=donor)
+  
 @app.route('/charge', methods=['POST'])
 def charge():
     # Amount in cents
     amount = int(float(request.form['customer_amount']) * 100)
     dollar_amount = format((float(amount)/ 100), '.2f')
-
+    description = "Charitable contribution to Ada Developers Academy under the 501c3 Technology Alliance. Tax ID: da8au3b3k"
     customer = stripe.Customer.create(
         email='customer@example.com',
         card=request.form['stripeToken']
     )
-
+    
     charge = stripe.Charge.create(
         customer=customer.id,
         amount=amount,
         currency='usd',
-        description='Flask Charge'
+        description=description
     )
 
     if not charge['failure_code']:
@@ -79,8 +85,9 @@ def charge():
     if charge['failure_code'] == 'success':
         db.session.add(donor)
         db.session.commit()
-
-    return render_template('charge.html', amount=amount, dollar_amount=dollar_amount)
+    
+    return redirect(url_for('thank_you', donor=donor.id))
+    
 
 @app.template_filter('formatmoney')
 def formatmoney(amount, cents=100):

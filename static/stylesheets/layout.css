@@ -14,3 +14,72 @@ header {
   background-color: #c6dde1;
   margin-bottom: 10px;
 }
+
+blockquote {
+  margin-top: 1em;
+  margin-left: 0.7em;
+  border: none;
+  font-size: 1em;
+}
+
+blockquote p:before,
+blockquote p:after {
+  font-size: 2.5em;
+  line-height: 1;
+  position: absolute;
+}
+
+blockquote p:after {
+  content: '\201D';
+}
+
+.heading {
+  background-color: white;
+  color: black;
+  text-align: center;
+  padding: 1em 0;
+  margin-bottom: 1em;
+}
+
+.heading hr {
+  width: 25%;
+  border-color: black;
+}
+.heading h1 {
+  font-size: 2em;
+  color: black;
+}
+
+.heading h2 {
+  font-size: 1.5em;
+  margin-bottom: 0px;
+}
+
+.hidden-until-amount-focused {
+  display: none;
+}
+
+.btn-primary {
+  background-color: #4c868f;
+  border-color: #4c868f;
+}
+
+.btn-primary:hover {
+  background-color: #3c767f;
+}
+
+.btn-primary:active,
+.btn-primary[disabled] {
+  background-color: #2c666f !important;
+}
+
+input[type=text].cust-amount {
+  font-size: 1.5em;
+  height: 75px;
+  border: 1px solid #4c868f;
+}
+
+.lead.small {
+  font-size: 1.1em;
+  margin-top: 2em;
+}

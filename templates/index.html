@@ -1,57 +1,86 @@
 {% extends "layout.html" %}
 {% block content %}
-  <div class="alert alert-danger alert-dismissable payment-errors">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <span></span>
-  </div>
-  
-  <form action="/charge" method="POST" role='form' class="form-horizontal" id="payment-form">
+  <div class='row'>
+    <div class='col-lg-6'>
+      
+      <p class='lead small'>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+      
+      <blockquote>
+        <p>All of these programmers are great. I would take any of them onto my team.</p>
+        <cite><strong>Bookis Smuin</strong>, Some Person, Person at Ada</cite>
+      </blockquote>
+      
+      <blockquote>
+        <p>All of these programmers are great. I would take any of them onto my team.</p>
+        <cite><strong>Bookis Smuin</strong>, Some Person, Person at Ada</cite>
+      </blockquote>
 
-  <div class="form-group">
-    <label class="col-lg-1">Name:</label>
-    <div class='col-lg-11'>
-      <input type="text" size="25" placeholder="Name" class='cust-name form-control' name="customer_name"/>
+      <blockquote>
+        <p>All of these programmers are great. I would take any of them onto my team.</p>
+        <cite><strong>Bookis Smuin</strong>, Some Person, Person at Ada</cite>
+      </blockquote>
+
+    </div>
+    <div class='col-lg-6 '>
+      
+      <div class="heading">
+        <h1>Support Women</h1>
+        <hr>
+        <h2>Contribute Today</h2>
+      </div>
+    
+      <form action="/charge" method="POST" role='form' class="form-horizontal" id="payment-form">
+        <div class="form-group">
+          <label class="col-lg-2 sr-only">Amount:</label>
+          <div class='col-lg-11'>
+            <input type="text" size="10" placeholder="$ Amount" class='cust-amount form-control input-lg' name="customer_amount"/>
+          </div>
+        </div>
+        
+        <div class="alert alert-danger alert-dismissable payment-errors">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <span></span>
+        </div>
+
+        
+          <div class="form-group">
+            <label class="sr-only">Name:</label>
+            <div class='col-lg-6'>
+              <input type="text" size="25" placeholder="Name" class='cust-name form-control input-sm' name="customer_name"/>
+            </div>
+            <label class="sr-only">Email:</label>
+            <div class='col-lg-6'>
+              <input type="text" size="20" placeholder="Email" class='cust-email form-control input-sm' name="customer_email"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="sr-only">Card Number:</label>
+            <div class='col-lg-8'>
+              <input type="text" size="20" placeholder="Card Number" class='card-number form-control input-sm' data-stripe="number"/>
+            </div>
+            <label class="sr-only">CVC:</label>
+            <div class='col-lg-4'>
+              <input type="text" size="4" placeholder="Security Code" class='card-cvc form-control input-sm' data-stripe="cvc"/>
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label class='sr-only'>Expiration:</label>
+            <div class='col-sm-6'>
+              <input type="text" size="2" placeholder="MM" class='card-expiry-month form-control col-lg-4 input-sm' data-stripe="exp-month"/>
+            </div>
+            <div class='col-sm-6'>
+              <input type="text" size="4" placeholder="YYYY" class='card-expiry-year form-control col-lg-4 input-sm' data-stripe="exp-year"/>
+            </div>
+          </div>
+          
+        <button class='btn btn-primary btn-lg btn-block' type="submit">Submit Payment</button>
+      </form>
     </div>
   </div>
 
-  <div class="form-group">
-    <label class="col-lg-1">Email:</label>
-    <div class='col-lg-11'>
-      <input type="text" size="20" placeholder="Email" class='cust-email form-control' name="customer_email"/>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-lg-1">Amount:</label>
-    <div class='col-lg-11'>
-      <input type="text" size="10" placeholder="$ Amount" class='cust-amount form-control' name="customer_amount"/>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-lg-2">Card Number:</label>
-    <div class='col-lg-11'>
-      <input type="text" size="20" placeholder="Card Number" class='card-number form-control' data-stripe="number"/>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-lg-1">CVC:</label>
-    <div class='col-lg-11'>
-      <input type="text" size="4" placeholder="Security Code" class='card-cvc form-control' data-stripe="cvc"/>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-lg-1">Expiration:</label>
-    <div class='col-lg-5'>
-      <input type="text" size="2" placeholder="MM" class='card-expiry-month form-control' data-stripe="exp-month"/>
-    </div>
-    <div class='col-lg-12'>
-      <input type="text" size="4" placeholder="YYYY" class='card-expiry-year form-control' data-stripe="exp-year"/>
-    </div>
-  </div>
-
-  <button class='btn btn-success btn-block' type="submit">Submit Payment</button>
-</form>
 {% endblock %}

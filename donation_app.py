@@ -9,6 +9,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"]
 db = SQLAlchemy(app)
 
 class Donor(db.Model):
+    __tablename__ = 'donors'
     id        = db.Column(db.Integer, primary_key=True)
     name      = db.Column(db.String(80))
     email     = db.Column(db.String(120))
@@ -57,7 +58,7 @@ def charge():
     dollar_amount = format((float(amount)/ 100), '.2f')
     description = "Charitable contribution to Ada Developers Academy under the 501c3 Technology Alliance. Tax ID: da8au3b3k"
     customer = stripe.Customer.create(
-        email='customer@example.com',
+        email=request.form['customer_email'],
         card=request.form['stripeToken']
     )
     

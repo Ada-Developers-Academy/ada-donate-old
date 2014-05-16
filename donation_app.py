@@ -70,7 +70,7 @@ class Donor(db.Model):
 def check_ssl():
     print "SSL Check"
     force_ssl = os.environ["SSL"] == "True"
-    https = re.match(r'https:\/\/', request.url, re.I)
+    https = re.match(r'https', request.url, re.I)
     if force_ssl and not https:
         return redirect(request.url.replace("http", "https"))
     

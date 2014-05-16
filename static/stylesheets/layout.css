@@ -83,3 +83,13 @@ input[type=text].cust-amount {
   font-size: 1.1em;
   margin-top: 2em;
 }
+
+.help-block {
+  font-size: 80%;
+  margin: 0px;
+  color: #aaa;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}

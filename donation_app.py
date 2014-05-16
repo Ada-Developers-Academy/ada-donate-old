@@ -1,13 +1,34 @@
 import os
 from flask import Flask, render_template, request, g, redirect, url_for, abort, render_template, flash
 from flask.ext.sqlalchemy import SQLAlchemy
-from authorize import AuthorizeClient, CreditCard
+from authorize import AuthorizeClient, CreditCard, AuthorizeError, AuthorizeInvalidError, AuthorizeResponseError
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"] 
     
 db = SQLAlchemy(app)
 
+class DonationForm:
+  def __init__(self, params):
+    print params
+    if "customer_amount" in params:
+        self.amount = params.get("customer_amount")
+    if "customer_name" in params:
+        self.name = params["customer_name"]
+    if "customer_email" in params:
+        self.email = params["customer_email"]
+    if "card[number]" in params:
+        self.card_number       = params.get("card[number]")
+    if "card[cvc]" in params:
+        self.cvc       = params.get("card[cvc]")
+    if "card[month]" in params:
+        self.month       = params.get("card[month]")
+    if "card[year]" in params:
+        self.year       = params.get("card[year]")
+
+  def cents(self):
+      return int(float(self.amount) * 100)
+        
 class Transaction:
   def __init__(self, response):
     self.uid           = response["transaction_id"]
@@ -46,7 +67,8 @@ class Donor(db.Model):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    form = DonationForm(request.args)
+    return render_template('index.html', form=form)
 
 @app.route("/thank-you")
 def thank_you():
@@ -55,25 +77,31 @@ def thank_you():
   
 @app.route('/charge', methods=['POST'])
 def charge():
+    form = DonationForm(request.form)
     # Amount in cents
-    amount = int(float(request.form['customer_amount']) * 100)
-    dollar_amount = format((float(amount)/ 100), '.2f')
-    description = "Charitable contribution to Ada Developers Academy under the 501c3 Technology Alliance. Tax ID: da8au3b3k"
-    
     client = AuthorizeClient(os.environ["AUTHORIZENET_KEY"], os.environ["AUTHORIZENET_SECRET"])
-    cc = CreditCard(request.form["card[number]"], request.form["card[year]"], request.form["card[month]"], request.form["card[cvc]"])
-    card = client.card(cc)
-    response = card.capture(dollar_amount)
+    
+    try:
+      cc = CreditCard(form.card_number, form.year, form.month, form.cvc)
+      card = client.card(cc)
+      response = card.capture(form.amount)
+    except ValueError, ex:
+      return render_template('index.html', form=form, error="Please fill in the required fields")
+    except AuthorizeInvalidError, message:
+      return render_template('index.html', form=form, error=message)
+    except AuthorizeResponseError, response:
+      return render_template('index.html', form=form, error=response.full_response["response_reason_text"])
+      
     transaction = Transaction(response.full_response)
     
     donor = Donor(
-        name=request.form['customer_name'],
-        email=request.form['customer_email'],
+        name=form.name,
+        email=form.email,
         success=transaction.success(),
         stripe_id=transaction.uid,
         status=transaction.message,
         message=transaction.message,
-        amount=amount
+        amount=form.cents()
     )
     
     db.session.add(donor)

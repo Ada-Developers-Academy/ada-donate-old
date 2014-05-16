@@ -1,4 +1,5 @@
 import os
+import re
 from flask import Flask, render_template, request, g, redirect, url_for, abort, render_template, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 from authorize import AuthorizeClient, CreditCard, AuthorizeError, AuthorizeInvalidError, AuthorizeResponseError
@@ -65,6 +66,14 @@ class Donor(db.Model):
 
 # ROUTES ...
 
+@app.before_request
+def check_ssl():
+    print "SSL Check"
+    force_ssl = os.environ["SSL"] == "True"
+    https = re.match(r'https:\/\/', request.url, re.I)
+    if force_ssl and not https:
+        return redirect(request.url.replace("http", "https"))
+    
 @app.route('/')
 def index():
     form = DonationForm(request.args)

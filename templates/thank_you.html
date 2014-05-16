@@ -1,12 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-
-  <img src="http://placekitten.com/1200/400" alt='Thank You'/>
-  <h2 class='text-center'>Thank you for donating <strong>${{ donor.amount|formatmoney }}</strong> to Ada Developers Academy!</h2>
+  <div class='heading text-center'>
+    <h2>We have received your <strong>${{ donor.amount|formatmoney }}</strong> donation to Ada Developers Academy!</h2>
+  </div>
+  <img src="/static/images/about.jpg" alt='Thank You'/>
+  <hr>
+  <h2 class="strikethrough-header--b">
+    <span class="strike">Thank you for donating</span>
+  </h2>
   <p class='lead'>
     Your tax-deductible donation covers classroom costs (books, software, AV equipment, rent, and supplies), compensation for instructors and staff, and student scholarships. If you provided your email address, you will be sent a receipt for your donation. Questions? Please <a href=“mailto:contact@adadevelopersacademy.org?Subject=“Donation Inquiry”>email us</a>.  
   </p>
-
+  <hr>
   <div class='row'>
     <div class='col-lg-4'>
       <blockquote>

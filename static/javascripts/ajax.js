@@ -1,21 +1,19 @@
 $(document).ready(function() {
-  $('#payment-form').submit(function(event) {
-    var $form = $(this);
-
-    // Prevent the form from submitting with the default action
-    event.preventDefault();
-
-    // Disable the submit button to prevent repeated clicks
-    $form.find('button').prop('disabled', true);
-
-    Stripe.card.createToken($form, stripeResponseHandler);
-
-  });
   
   $('.alert button.close').click(function (e) {
     $(this).parent().hide()
   })
+  
+  $("#payment-form").validateForm()
 });
+
+$.fn.validateForm = function() {
+  var form = $(this)
+  var inputs = form.find("[data-validate]")
+  form.click(function (e) {
+    // e.preventDefault()
+  })
+}
 
 function stripeResponseHandler(status, response) {
     var form$ = $("#payment-form");

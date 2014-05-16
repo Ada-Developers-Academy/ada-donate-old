@@ -48,18 +48,18 @@
             </div>
             <label class="sr-only">Email:</label>
             <div class='col-lg-6'>
-              <input type="text" size="20" placeholder="Email" class='cust-email form-control input-sm' name="customer_email"/>
+              <input type="text" size="20" placeholder="Email" data-validate="true" class='cust-email form-control input-sm' name="customer_email"/>
             </div>
           </div>
           <label>Credit Card</label>
           <div class="form-group">
             
             <div class='col-lg-8'>
-              <input type="text" size="20" placeholder="Card Number" class='card-number form-control input-sm' data-stripe="number"/>
+              <input type="text" size="20" placeholder="Card Number" class='card-number form-control input-sm' name="card[number]" data-stripe="number"/>
             </div>
             <label class="sr-only">CVC:</label>
             <div class='col-lg-4'>
-              <input type="text" size="4" placeholder="Security Code" class='card-cvc form-control input-sm' data-stripe="cvc"/>
+              <input type="text" size="4" placeholder="Security Code" class='card-cvc form-control input-sm' name=card[cvc] data-stripe="cvc"/>
             </div>
           </div>
 
@@ -67,10 +67,10 @@
           <div class="form-group">
             <label class='sr-only'>Expiration:</label>
             <div class='col-sm-6'>
-              <input type="text" size="2" placeholder="MM" class='card-expiry-month form-control col-lg-4 input-sm' data-stripe="exp-month"/>
+              <input type="text" size="2" placeholder="MM" class='card-expiry-month form-control col-lg-4 input-sm' name=card[month] data-stripe="exp-month"/>
             </div>
             <div class='col-sm-6'>
-              <input type="text" size="4" placeholder="YYYY" class='card-expiry-year form-control col-lg-4 input-sm' data-stripe="exp-year"/>
+              <input type="text" size="4" placeholder="YYYY" class='card-expiry-year form-control col-lg-4 input-sm' name=card[year] data-stripe="exp-year"/>
             </div>
           </div>
 

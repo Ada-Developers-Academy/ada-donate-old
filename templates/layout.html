@@ -35,16 +35,10 @@
     {% block content %}{% endblock %}
   </div>
   
-  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
   <script type=text/javascript src="{{url_for('static', filename='javascripts/ajax.js') }}"></script>
   <script type=text/javascript>
-  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-</script>
-<script type="text/javascript">
-  // This identifies your website in the createToken call below
-  Stripe.setPublishableKey('{{key}}');
-  // ...
-</script>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  </script>
 </body>
 </html>

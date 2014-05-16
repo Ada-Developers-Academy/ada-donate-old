@@ -68,6 +68,7 @@ blockquote p:after {
   background-color: #3c767f;
 }
 
+.btn-primary:focus,
 .btn-primary:active,
 .btn-primary[disabled] {
   background-color: #2c666f !important;

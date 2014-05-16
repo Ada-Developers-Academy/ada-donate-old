@@ -1,13 +1,24 @@
 import os
 from flask import Flask, render_template, request, g, redirect, url_for, abort, render_template, flash
 from flask.ext.sqlalchemy import SQLAlchemy
-import stripe
+from authorize import AuthorizeClient, CreditCard
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"] 
     
 db = SQLAlchemy(app)
 
+class Transaction:
+  def __init__(self, response):
+    self.uid           = response["transaction_id"]
+    self.type          = response["transaction_type"]
+    self.response_code = response["response_code"]
+    self.amount        = response["amount"]
+    self.message       = response["response_reason_text"]
+    
+  def success(self):
+    return self.response_code == "1"
+    
 class Donor(db.Model):
     __tablename__ = 'donors'
     id        = db.Column(db.Integer, primary_key=True)
@@ -31,20 +42,11 @@ class Donor(db.Model):
     def __repr__(self):
         return '<Donor %r>' % self.name
 
-# STRIPE ...
-stripe_keys = {
-    'secret_key': os.environ['SECRET_KEY'],
-    'publishable_key': os.environ['PUBLISHABLE_KEY']
-}
-
-stripe.api_key = stripe_keys['secret_key']
-# ... STRIPE
-
 # ROUTES ...
 
 @app.route('/')
 def index():
-    return render_template('index.html', key=stripe_keys['publishable_key'])
+    return render_template('index.html')
 
 @app.route("/thank-you")
 def thank_you():
@@ -57,36 +59,26 @@ def charge():
     amount = int(float(request.form['customer_amount']) * 100)
     dollar_amount = format((float(amount)/ 100), '.2f')
     description = "Charitable contribution to Ada Developers Academy under the 501c3 Technology Alliance. Tax ID: da8au3b3k"
-    customer = stripe.Customer.create(
-        email=request.form['customer_email'],
-        card=request.form['stripeToken']
-    )
     
-    charge = stripe.Charge.create(
-        customer=customer.id,
-        amount=amount,
-        currency='usd',
-        description=description
-    )
-
-    if not charge['failure_code']:
-        charge['failure_code']    = 'success'
-        charge['failure_message'] = 'success'
+    client = AuthorizeClient(os.environ["AUTHORIZENET_KEY"], os.environ["AUTHORIZENET_SECRET"])
+    cc = CreditCard(request.form["card[number]"], request.form["card[year]"], request.form["card[month]"], request.form["card[cvc]"])
+    card = client.card(cc)
+    response = card.capture(dollar_amount)
+    transaction = Transaction(response.full_response)
     
     donor = Donor(
         name=request.form['customer_name'],
         email=request.form['customer_email'],
-        success=charge['captured'],
-        stripe_id=charge['id'],
-        status=charge['failure_code'],
-        message=charge['failure_message'],
+        success=transaction.success(),
+        stripe_id=transaction.uid,
+        status=transaction.message,
+        message=transaction.message,
         amount=amount
     )
-
-    if charge['failure_code'] == 'success':
-        db.session.add(donor)
-        db.session.commit()
     
+    db.session.add(donor)
+    db.session.commit()
+
     return redirect(url_for('thank_you', donor=donor.id))
     
 

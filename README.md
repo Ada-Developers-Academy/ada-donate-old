@@ -15,7 +15,7 @@ Change each value to the correct value for your environment
 Enter the python shell `foreman run python` and run the following to load the db configuration
 
 ```
-from app import db
+from donation_app import db
 db.create_all()
 ```
 

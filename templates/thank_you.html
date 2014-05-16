@@ -1,8 +1,32 @@
 {% extends "layout.html" %}
 {% block content %}
+
   <img src="http://placekitten.com/1200/400" alt='Thank You'/>
   <h2 class='text-center'>Thank you for donating <strong>${{ donor.amount|formatmoney }}</strong> to Ada Developers Academy!</h2>
   <p class='lead'>
     Your tax-deductible donation covers classroom costs (books, software, AV equipment, rent, and supplies), compensation for instructors and staff, and student scholarships. If you provided your email address, you will be sent a receipt for your donation. Questions? Please <a href=“mailto:contact@adadevelopersacademy.org?Subject=“Donation Inquiry”>email us</a>.  
   </p>
+
+  <div class='row'>
+    <div class='col-lg-4'>
+      <blockquote>
+        <p>No program but Ada provides the support and resources for older students like myself wanting to change careers and open up opportunities without going into debt.</p>
+        <cite><strong>Davida Marion</strong>, Ada Student</cite>
+      </blockquote>
+    </div>
+
+    <div class='col-lg-4'>    
+      <blockquote>
+        <p>The internship is an extra component above and beyond what other programs offer.</p>
+        <cite><strong>Blake Johnson</strong>, Ada Student</cite>
+      </blockquote>
+    </div>
+
+    <div class='col-lg-4'>
+      <blockquote>
+        <p>I’ve pursued other avenues to software development, and Ada was by far the most effective, efficient, and enjoyable.</p>
+        <cite><strong>Anne Kimsey</strong>, Ada Student</cite>
+      </blockquote>
+    </div>
+  </div>
 {% endblock %}

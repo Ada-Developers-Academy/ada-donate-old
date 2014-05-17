@@ -72,6 +72,7 @@ def check_ssl():
     force_ssl = os.environ["SSL"] == "True"
     https = re.match(r'https', request.url, re.I)
     if force_ssl and not https:
+        print request.url
         return redirect(request.url.replace("http", "https"))
     
 @app.route('/')

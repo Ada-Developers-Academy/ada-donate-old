@@ -95,7 +95,7 @@ def charge():
     
     try:
       cc = CreditCard(form.card_number, form.year, form.month, form.cvc)
-      card = client.card(cc)
+      card = client.card(cc, None, form.email, "Tax deductable donation to Ada Developers Academy")
       response = card.capture(form.amount)
     except ValueError, ex:
       return render_template('index.html', form=form, error="Please fill in the required fields")

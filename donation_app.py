@@ -3,8 +3,10 @@ import re
 from flask import Flask, render_template, request, g, redirect, url_for, abort, render_template, flash
 from flask.ext.sqlalchemy import SQLAlchemy
 from authorize import AuthorizeClient, CreditCard, AuthorizeError, AuthorizeInvalidError, AuthorizeResponseError
+from flask_sslify import SSLify
 
 app = Flask(__name__)
+sslify = SSLify(app, permanent=True)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"] 
     
 db = SQLAlchemy(app)
@@ -66,13 +68,14 @@ class Donor(db.Model):
 
 # ROUTES ...
 
-@app.before_request
-def check_ssl():
-    print "SSL Check"
-    force_ssl = os.environ["SSL"] == "True"
-    https = re.match(r'https', request.url, re.I)
-    if force_ssl and not https:
-        return redirect(url_for('index', _scheme='https', _external=True))
+# @app.before_request
+# def check_ssl():
+#     print "SSL Check"
+#     force_ssl = os.environ["SSL"] == "True"
+#     https = re.match(r'https', request.url, re.I)
+#     print request
+#     if force_ssl and not https:
+#         return redirect(url_for('index', _scheme='https', _external=True))
     
 @app.route('/')
 def index():
@@ -136,4 +139,4 @@ def show_donors():
 # ... ROUTES
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug="DEBUG" in os.environ)

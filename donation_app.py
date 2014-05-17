@@ -8,7 +8,7 @@ from flask_sslify import SSLify
 app = Flask(__name__)
 sslify = SSLify(app, permanent=True)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"] 
-    
+app.config["PAYMENT_PRODUCTION"] = os.environ["PAYMENT_PRODUCTION"] == "True"
 db = SQLAlchemy(app)
 
 class DonationForm:
@@ -91,7 +91,7 @@ def thank_you():
 def charge():
     form = DonationForm(request.form)
     # Amount in cents
-    client = AuthorizeClient(os.environ["AUTHORIZENET_KEY"], os.environ["AUTHORIZENET_SECRET"])
+    client = AuthorizeClient(os.environ["AUTHORIZENET_KEY"], os.environ["AUTHORIZENET_SECRET"], app.config["PAYMENT_PRODUCTION"])
     
     try:
       cc = CreditCard(form.card_number, form.year, form.month, form.cvc)

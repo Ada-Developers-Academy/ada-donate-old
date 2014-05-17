@@ -10,4 +10,4 @@ stripe==1.14.0
 Flask-SQLAlchemy==1.0
 psycopg2==2.5.3
 flask_sslify==0.1.4
--e git+git@github.com:bookis/authorizesauce.git#egg=AuthorizeSauce-master
+-e git+https://github.com/bookis/authorizesauce#egg=AuthorizeSauce-master

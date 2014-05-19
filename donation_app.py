@@ -13,7 +13,6 @@ db = SQLAlchemy(app)
 
 class DonationForm:
   def __init__(self, params):
-    print params
     if "customer_amount" in params:
         self.amount = params.get("customer_amount")
     if "customer_name" in params:

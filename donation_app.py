@@ -7,7 +7,7 @@ from flask_sslify import SSLify
 
 app = Flask(__name__)
 sslify = SSLify(app, permanent=True)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"] 
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["SQLALCHEMY_DATABASE_URI"]
 app.config["PAYMENT_SANDBOX"] = os.environ["PAYMENT_SANDBOX"] == "True"
 db = SQLAlchemy(app)
 
@@ -30,7 +30,7 @@ class DonationForm:
 
   def cents(self):
       return int(float(self.amount) * 100)
-        
+
 class Transaction:
   def __init__(self, response):
     self.uid           = response["transaction_id"]
@@ -38,10 +38,10 @@ class Transaction:
     self.response_code = response["response_code"]
     self.amount        = response["amount"]
     self.message       = response["response_reason_text"]
-    
+
   def success(self):
     return self.response_code == "1"
-    
+
 class Donor(db.Model):
     __tablename__ = 'donors'
     id        = db.Column(db.Integer, primary_key=True)
@@ -52,7 +52,7 @@ class Donor(db.Model):
     status    = db.Column(db.String(80))
     message   = db.Column(db.String(255))
     amount    = db.Column(db.Integer)
-    
+
     def __init__(self, **attrs):
         self.name      = attrs["name"]
         self.email     = attrs["email"]
@@ -75,7 +75,7 @@ class Donor(db.Model):
 #     print request
 #     if force_ssl and not https:
 #         return redirect(url_for('index', _scheme='https', _external=True))
-    
+
 @app.route('/')
 def index():
     form = DonationForm(request.args)
@@ -85,16 +85,16 @@ def index():
 def thank_you():
   donor = Donor.query.get(request.args.get('donor'))
   return render_template('thank_you.html', donor=donor)
-  
+
 @app.route('/charge', methods=['POST'])
 def charge():
     form = DonationForm(request.form)
     # Amount in cents
     client = AuthorizeClient(os.environ["AUTHORIZENET_KEY"], os.environ["AUTHORIZENET_SECRET"], app.config["PAYMENT_SANDBOX"])
-    
+
     try:
       cc = CreditCard(form.card_number, form.year, form.month, form.cvc)
-      card = client.card(cc, None, form.email, "Tax deductable donation to Ada Developers Academy")
+      card = client.card(cc, None, form.email, "Tax deductable donation to Ada Developers Academy. Tax ID: 91-1648680")
       response = card.capture(form.amount)
     except ValueError, ex:
       return render_template('index.html', form=form, error="Please fill in the required fields")
@@ -102,9 +102,9 @@ def charge():
       return render_template('index.html', form=form, error=message)
     except AuthorizeResponseError, response:
       return render_template('index.html', form=form, error=response.full_response["response_reason_text"])
-      
+
     transaction = Transaction(response.full_response)
-    
+
     donor = Donor(
         name=form.name,
         email=form.email,
@@ -114,12 +114,12 @@ def charge():
         message=transaction.message,
         amount=form.cents()
     )
-    
+
     db.session.add(donor)
     db.session.commit()
 
     return redirect(url_for('thank_you', donor=donor.id))
-    
+
 
 @app.template_filter('formatmoney')
 def formatmoney(amount, cents=100):

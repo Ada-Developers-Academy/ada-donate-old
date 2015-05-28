@@ -3,7 +3,18 @@ donations
 
 ### Getting Started
 
-Start by copying the setting from `application.cfg.example` into `.env`:
+New to Flask?
+
+```
+[Install it](http://flask.pocoo.org/docs/0.10/installation/)
+```
+
+From the project directory, install requirements:
+```
+pip install -r requirements.txt
+```
+
+Copy the setting from `application.cfg.example` into `.env`:
 
 ```
 cp application.cfg.example .env
@@ -12,6 +23,17 @@ cp application.cfg.example .env
 Change each value to the correct value for your environment
 
 ### Prepare the DB
+Create the database
+
+```
+psql
+```
+Then,
+
+```
+create database YOUR_DATABASE_NAME;
+```
+
 Enter the python shell `foreman run python` and run the following to load the db configuration
 
 ```

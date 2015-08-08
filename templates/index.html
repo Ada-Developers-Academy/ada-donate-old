@@ -40,7 +40,7 @@
             <span>{{ error }}</span>
           </div>
         {% endif %}
-        
+
           <label>You</label>
           <div class="form-group">
             <label class="sr-only">Name:</label>
@@ -53,11 +53,12 @@
               <input type="text" size="20" placeholder="Email" data-validate="true" class='cust-email form-control input-sm' value="{{form.email}}" name="customer_email"/>
             </div>
           </div>
-          <label>Credit Card</label>
+          <label class='credit-card'>Credit Card <i class="text-success card-type-icon fa"></i></label>
           <div class="form-group">
-            
+
             <div class='col-lg-8'>
               <input type="text" size="20" placeholder="Card Number" class='card-number form-control input-sm' name="card[number]" value="{{form.card_number}}"/>
+              <input type="hidden" class='card-type' name="card[type]" value="{{form.card_type}}"/>
             </div>
             <label class="sr-only">CVC:</label>
             <div class='col-lg-4'>
@@ -76,8 +77,8 @@
             </div>
           </div>
 
-        <button class='btn btn-primary btn-lg btn-block' type="submit">Submit Donation</button>
-        
+        <button class='btn btn-primary btn-lg btn-block submit-donation' type="submit" disabled="disabled">Submit Donation</button>
+
       </form>
     </div>
   </div>

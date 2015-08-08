@@ -5,10 +5,11 @@
   <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/bootstrap.min.css') }}" type="text/css" media="all" charset="utf-8">
   <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/master.css') }}" type="text/css" media="all" charset="utf-8">
   <link rel="stylesheet" href="{{url_for('static', filename='stylesheets/layout.css') }}" type="text/css" media="all" charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  
+  <i class='glyphicon'></i>
   <header role="banner">
     <div class="l-container">
 
@@ -24,20 +25,21 @@
             <li><a href="http://adadevelopersacademy.org/companies">For Companies</a></li>
             <li><a href="http://application.adadevelopersacademy.org/">Apply</a></li>
             <li><a href="http://adadevacademy.tumblr.com/">Blog</a></li>
-          </ul>        
+          </ul>
       </nav><a href="#" class="nav-toggle" aria-hidden="true">Menu</a>
       </div>
 
     </div> <!-- end .l-container -->
   </header>
 
-  
+
   <div class='container'>
     {% block content %}{% endblock %}
   </div>
-  
-  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> 
-  <script type=text/javascript src="{{url_for('static', filename='javascripts/ajax.js') }}"></script>
+
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type=text/javascript src="{{url_for('static', filename='javascripts/jquery.creditCardValidator.js') }}"></script>
+  <script type=text/javascript src="{{url_for('static', filename='javascripts/app.js') }}"></script>
   <script type=text/javascript>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
   </script>
